@@ -3,10 +3,7 @@ package com.mwq;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author mwq0106
@@ -14,22 +11,9 @@ import java.util.List;
  */
 public class LeetCode {
     public static void main(String[] args) {
-        int[][] people = new int[6][];
-        people[0] = new int[]{7,0};
-        people[1] = new int[]{4,4};
-        people[2] = new int[]{7,1};
-        people[3] = new int[]{5,0};
-        people[4] = new int[]{6,1};
-        people[5] = new int[]{5,2};
-//        people[0] = new int[]{1,0};
-//        people[1] = new int[]{1,4};
-//        people[2] = new int[]{1,1};
-//        people[3] = new int[]{2,0};
-//        people[4] = new int[]{1,3};
-//        people[5] = new int[]{1,2};
         LeetCode leetCode = new LeetCode();
-        int[][] result = leetCode.reconstructQueue(people);
-        System.out.println(JSON.toJSONString(result));
+        String S = "ababcbaca";
+        System.out.println(leetCode.partitionLabels(S));
     }
 
     /**
@@ -88,5 +72,83 @@ public class LeetCode {
             }
         }
         return list.toArray(new int[people.length][]);
+    }
+    public boolean isSubsequence(String s, String t) {
+        char[] chars = s.toCharArray();
+        char[] chars2 = t.toCharArray();
+        int last = 0;
+        for (int i = 0; i < chars.length; i++) {
+            boolean have = false;
+            for (int j = last; j < chars2.length; j++) {
+                if(chars[i] == chars2[j]){
+                    have = true;
+                    last = j+1;
+                    break;
+                }
+            }
+            if(!have){
+                return false;
+            }
+        }
+        return true;
+    }
+    public int maxSubArray(int[] nums) {
+        int pre_max = nums[0];
+        int max = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if(pre_max<0){
+                if(nums[i]>pre_max){
+                    pre_max = nums[i];
+                    if(pre_max > max){
+                        max = pre_max;
+                    }
+                }else {
+                    pre_max = nums[i];
+                }
+            }else {
+                pre_max = pre_max + nums[i];
+                if(pre_max > max){
+                    max = pre_max;
+                }
+            }
+        }
+        return max;
+    }
+    public List<Integer> partitionLabels(String S) {
+        int i = 0;
+        Set<Character> set1 = new HashSet<>();
+        Set<Character> set2 = new HashSet<>();
+        List<Integer> list = new LinkedList<>();
+        char[] chars = S.toCharArray();
+        int index;
+        while (true){
+            set1.clear();
+            set2.clear();
+            set1.add(chars[i]);
+            index = i;
+            list.add(index);
+            for (int j = i+1; j < chars.length; j++) {
+                set2.add(chars[j]);
+                if(set1.contains(chars[j])){
+                    index = j;
+                    set1.addAll(set2);
+                }
+            }
+            i = index + 1;
+            if(i == chars.length){
+                break;
+            }
+        }
+        List<Integer> result = new LinkedList<>();
+        if(list.size() == 1){
+            result.add(chars.length);
+            return result;
+        }
+//        result.add(list.get(1)-list.get(0));
+        for (int j = 1; j < list.size(); j++) {
+            result.add(list.get(j)-list.get(j-1));
+        }
+        result.add(chars.length - list.get(list.size()-1));
+        return result;
     }
 }
