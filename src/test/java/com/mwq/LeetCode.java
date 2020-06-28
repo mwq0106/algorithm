@@ -12,8 +12,8 @@ import java.util.*;
 public class LeetCode {
     public static void main(String[] args) {
         LeetCode leetCode = new LeetCode();
-        String S = "ababcbaca";
-        System.out.println(leetCode.partitionLabels(S));
+        int[] numbs = new int[]{-110,-1,0,1,100000};
+        System.out.println(leetCode.getSum(2147483647,-2147483648));
     }
 
     /**
@@ -150,5 +150,150 @@ public class LeetCode {
         }
         result.add(chars.length - list.get(list.size()-1));
         return result;
+    }
+    public int hammingDistance(int x, int y) {
+        int a = x ^ y;
+        return get1Nums(a);
+    }
+    private int get1Nums(int a){
+        int n = 0;
+        while (a != 0){
+            a = a&(a-1);
+            n++;
+        }
+        return n;
+    }
+    public int singleNumber(int[] nums) {
+        int a = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            a ^= nums[i];
+        }
+        return a;
+    }
+    public int missingNumber(int[] nums) {
+        if(nums.length == 1){
+            if(nums[0] == 0){
+                return 1;
+            }
+            if(nums[0] == 1){
+                return 0;
+            }
+        }
+        int maxNumb = nums.length;
+        int maxIndex = -1;
+        int i = 0;
+        while (i<nums.length){
+            if(nums[i] == maxNumb){
+                maxIndex = i;
+                i++;
+                continue;
+            }
+            if(nums[i] == i){
+                i++;
+            }else {
+                swap(nums,i,nums[i]);
+            }
+        }
+        if(maxIndex == -1){
+            return nums.length;
+        }
+        return maxIndex;
+    }
+    private void swap(int[] nums,int a,int b){
+        int temp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = temp;
+    }
+    public int missingNumber2(int[] nums) {
+        int res = nums.length;
+        for (int i = 0; i < nums.length; ++i){
+            res ^= nums[i];
+            res ^= i;
+        }
+        return res;
+    }
+    public int reverseBits(int n) {
+        int ret = 0;
+        for (int i = 0; i < 32; i++) {
+            ret |= (n & 1);
+            if(i!=31){
+                ret <<= 1;
+            }
+            n >>>= 1;
+        }
+        return ret;
+    }
+    public boolean isPowerOfTwo(int n) {
+        if(n <= 0){
+            return false;
+        }
+        int i = 0;
+        while (n != 0){
+            n = n & (n-1);
+            i++;
+        }
+        if(i == 1){
+            return true;
+        }
+        return false;
+    }
+    public boolean isPowerOfFour(int num) {
+        int n = num &(num-1);
+        if(n != 0) {
+            return false;
+        }
+        String binaryString = Integer.toBinaryString(num);
+        for (int i = 0; i < binaryString.length(); i++) {
+            if(binaryString.charAt(binaryString.length()-1-i) == '1'){
+                if((i & 1)==0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public int getSum(int a, int b) {
+        if(a <0 && b<0){
+            a = -a;
+            for (int i = 0; i < Math.abs(b); i++) {
+                a = increase(a);
+            }
+            return -a;
+        }else if(a>0 && b>0){
+            for (int i = 0; i < b; i++) {
+                a = increase(a);
+            }
+            return a;
+        }else {
+            if(a<0){
+                for (int i = 0; i < b; i++) {
+                    a = increase(a);
+                }
+                return a;
+            }else {
+                for (int i = 0; i < a; i++) {
+                    b = increase(b);
+                }
+                return b;
+            }
+        }
+    }
+    private int increase(int c){
+        if((c & 1)==1){
+            c &= 0xfffffffe;
+            int mask = 2;
+            for (int i = 0; i < 32; i++) {
+                if((c & mask) != 0){
+                    c ^=mask;
+                    mask <<=1;
+                }else {
+                    c |= mask;
+                    break;
+                }
+            }
+        }else {
+            c |=1;
+        }
+        return c;
     }
 }
