@@ -12,8 +12,7 @@ import java.util.*;
 public class LeetCode {
     public static void main(String[] args) {
         LeetCode leetCode = new LeetCode();
-        int[] numbs = new int[]{-110,-1,0,1,100000};
-        System.out.println(leetCode.getSum(2147483647,-2147483648));
+
     }
 
     /**

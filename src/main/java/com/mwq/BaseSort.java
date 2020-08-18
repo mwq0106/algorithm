@@ -8,7 +8,7 @@ import java.util.List;
  *
  */
 public class BaseSort {
-    public static void main( String[] args ) {
+    public static void main( String[] args) {
         int[] numbs1 = new int[]{3,1,5,2,6,9,100,200,250,1,1};
         int[] numbs2 = new int[]{2,1};
 
