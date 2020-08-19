@@ -7,11 +7,13 @@ package com.mwq;
 public class BaseSort2 {
     public static void main( String[] args) {
 //        int[] numbs1 = new int[]{3,1,5,2,6,9,100,200,250,1,1};
-        int[] numbs1 = new int[]{3,1,5};
-        partition(numbs1,0,numbs1.length-1);
+        int[] numbs1 = new int[]{2,1,-1};
+        quickSort(numbs1,0,numbs1.length-1);
         for (int i = 0; i < numbs1.length; i++) {
             System.out.print(numbs1[i]+",");
         }
+        System.out.println();
+        System.out.println(leftBinarySearch(numbs1,1));
     }
     public static void mergesort(int[] numbs,int l,int r){
         if(l>=r){
@@ -52,7 +54,7 @@ public class BaseSort2 {
         if(l>=r){
             return;
         }
-        int index = partition(numb,l,r);
+        int index = partition2(numb,l,r);
         quickSort(numb,l,index-1);
         quickSort(numb,index+1,r);
     }
@@ -64,11 +66,12 @@ public class BaseSort2 {
     public static int partition(int[] numbs,int l,int r){
         int i = l,j=r;
         int index = numbs[l];
+        i++;
         while (true){
-            while (numbs[i]<index) {
+            while (i<=r && numbs[i]<=index) {
                 i++;
             }
-            while (numbs[j]>index) {
+            while (j>=l && numbs[j]>index) {
                 j--;
             }
             if(i>=j){
@@ -76,6 +79,61 @@ public class BaseSort2 {
             }
             swap(numbs,i,j);
         }
-        return j;
+        swap(numbs,l,i-1);
+        return i-1;
+    }
+    public static int partition2(int[] numbs,int l,int r){
+        int index = l+1;
+        int numb = numbs[l];
+        for (int i = l+1; i <=r ; i++) {
+            if(numbs[i]<numb){
+                swap(numbs,i,index);
+                index++;
+            }
+        }
+        swap(numbs,index-1,l);
+        return index-1;
+    }
+    public static int binarySearch(int[] numbs,int target){
+        int low = 0,high = numbs.length-1;
+
+        while (low<=high){
+            int m = low + (high-low)/2;
+            if(numbs[m]<target){
+                low = m +1;
+            }else if(numbs[m]>target){
+                high = m -1;
+            }else {
+                return m;
+            }
+        }
+        return low;
+    }
+    public static int leftBinarySearch(int[] numbs,int target){
+        int low = 0,high = numbs.length-1;
+        while (low <= high){
+            int m = low + (high-low)/2;
+            if(numbs[m]<target){
+                low = m+1;
+            }else if(numbs[m]>target){
+                high = m-1;
+            }else {
+                if(m-1<0 || numbs[m-1] != target){
+                    return m;
+                }else {
+                    high = m-1;
+                }
+            }
+        }
+        return low;
+    }
+    public static void heapsort(int[] numbs){
+
+    }
+    public static void buildheap(int[] numbs){
+
+    }
+    public static void heapify(int[] numbs,int index){
+        
     }
 }
