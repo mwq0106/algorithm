@@ -6,14 +6,15 @@ package com.mwq;
  */
 public class BaseSort2 {
     public static void main( String[] args) {
-//        int[] numbs1 = new int[]{3,1,5,2,6,9,100,200,250,1,1};
-        int[] numbs1 = new int[]{2,1,-1};
-        quickSort(numbs1,0,numbs1.length-1);
-        for (int i = 0; i < numbs1.length; i++) {
-            System.out.print(numbs1[i]+",");
-        }
-        System.out.println();
-        System.out.println(leftBinarySearch(numbs1,1));
+        int[] numbs1 = new int[]{1,2,3,1};
+//        int[] numbs1 = new int[]{1,2,-1};
+        System.out.println(rob(numbs1));
+//        heapsort(numbs1);
+//        for (int i = 0; i < numbs1.length; i++) {
+//            System.out.print(numbs1[i]+",");
+//        }
+//        System.out.println();
+//        System.out.println(leftBinarySearch(numbs1,1));
     }
     public static void mergesort(int[] numbs,int l,int r){
         if(l>=r){
@@ -128,12 +129,38 @@ public class BaseSort2 {
         return low;
     }
     public static void heapsort(int[] numbs){
-
+        buildheap(numbs);
+        for (int i = 0; i < numbs.length; i++) {
+            swap(numbs,0,numbs.length - 1 - i);
+            heapify(numbs,0,numbs.length-i-1);
+        }
     }
     public static void buildheap(int[] numbs){
-
+        for (int i = numbs.length/2 -1; i >=0 ; i--) {
+            heapify(numbs,i,numbs.length);
+        }
     }
-    public static void heapify(int[] numbs,int index){
-        
+    public static void heapify(int[] numbs,int index,int len){
+        int maxIndex = index;
+
+        if(2*index + 1<len && numbs[2*index+1]>numbs[maxIndex]){
+            maxIndex = 2*index+1;
+        }
+        if(2*index + 2<len && numbs[2*index+2]>numbs[maxIndex]){
+            maxIndex = 2*index+2;
+        }
+        if(maxIndex != index){
+            swap(numbs,maxIndex,index);
+            heapify(numbs,maxIndex,len);
+        }
+    }
+    public static int rob(int[] numbs){
+        int[] values = new int[numbs.length+1];
+        values[0] = 0;
+        values[1] = numbs[0];
+        for (int i = 1; i < numbs.length; i++) {
+            values[i+1] = Math.max(values[i],values[i-1]+numbs[i]);
+        }
+        return values[numbs.length];
     }
 }
