@@ -6,15 +6,7 @@ package com.mwq;
  */
 public class BaseSort2 {
     public static void main( String[] args) {
-        int[] numbs1 = new int[]{1,2,3,1};
-//        int[] numbs1 = new int[]{1,2,-1};
-        System.out.println(rob(numbs1));
-//        heapsort(numbs1);
-//        for (int i = 0; i < numbs1.length; i++) {
-//            System.out.print(numbs1[i]+",");
-//        }
-//        System.out.println();
-//        System.out.println(leftBinarySearch(numbs1,1));
+        System.out.println(stringAdd("999","1111"));
     }
     public static void mergesort(int[] numbs,int l,int r){
         if(l>=r){
@@ -162,5 +154,82 @@ public class BaseSort2 {
             values[i+1] = Math.max(values[i],values[i-1]+numbs[i]);
         }
         return values[numbs.length];
+    }
+
+    /**
+     * 字符串数字之和，大数之和
+     * @param str1
+     * @param str2
+     * @return
+     */
+    public static String stringAdd(String str1,String str2){
+        //翻转
+        StringBuilder sbTemp = new StringBuilder();
+        for (int i = 0; i < str1.length(); i++) {
+            sbTemp.append(str1.charAt(str1.length() -1-i));
+        }
+        str1 = sbTemp.toString();
+        sbTemp = new StringBuilder();
+        for (int i = 0; i < str2.length(); i++) {
+            sbTemp.append(str2.charAt(str2.length() -1-i));
+        }
+        str2 = sbTemp.toString();
+
+
+
+        String temp = str1;
+        if(str1.length()<str2.length()){
+            str1 = str2;
+            str2 = temp;
+        }
+        //str1是大的，str2是小的
+        StringBuilder sb = new StringBuilder(str1);
+
+        for (int i = 0; i < str2.length(); i++) {
+            int next;
+            int t1 = Integer.parseInt(((Character)sb.charAt(i)).toString());
+            int t2 = Integer.parseInt(((Character)str2.charAt(i)).toString());
+            int t = t1 +t2;
+            Integer[] tArray = new Integer[2];
+            if(t>9){
+                next = 1;
+                tArray[0] = 1;
+                tArray[1] = t-10;
+            }else {
+                next = 0;
+                tArray[0] = 0;
+                tArray[1] = t;
+            }
+            sb.setCharAt(i,tArray[1].toString().charAt(0));
+            if(next == 0){
+                continue;
+            }
+            for (int j = i+1; j < sb.length(); j++) {
+                Integer[] tempArray = new Integer[2];
+                int nextTemp = Integer.parseInt(((Character)sb.charAt(j)).toString()) + next;
+                if(nextTemp >9){
+                    next =1;
+                    tempArray[0]= 1;
+                    tempArray[1] = nextTemp-10;
+                }else {
+                    next =0;
+                    tempArray[0]= 0;
+                    tempArray[1] = nextTemp;
+                }
+                sb.setCharAt(j,tempArray[1].toString().charAt(0));
+                if(next == 0){
+                    break;
+                }
+            }
+            if(next == 1){
+                sb.append("1");
+            }
+        }
+        //翻转
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < sb.length(); i++) {
+            res.append(sb.charAt(sb.length() -1-i));
+        }
+        return res.toString();
     }
 }
