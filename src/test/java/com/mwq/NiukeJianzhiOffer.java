@@ -19,17 +19,8 @@ public class NiukeJianzhiOffer {
 
     }
 
-
-    static AtomicInteger count = new AtomicInteger(1);
-    static Integer count2 = 1;
-    static Object o = new Object();
     public static void main(String[] ar) throws Exception{
-        MyThread a = new MyThread(1);
-        MyThread b = new MyThread(2);
-        MyThread c = new MyThread(3);
-        a.start();
-        b.start();
-        c.start();
+
     }
 
     /**
@@ -173,42 +164,5 @@ public class NiukeJianzhiOffer {
     }
 
 
-    static class MyThread extends Thread{
-        MyThread t;
-        int target;
-        MyThread(MyThread t){
-            this.t = t;
-        }
-        MyThread(int target){
-            this.target = target;
-        }
 
-        @Override
-        public void run(){
-            synchronized (o){
-                while (true){
-//                    boolean res = count.compareAndSet(target,target +1);
-                    boolean res = false;
-                    if(count2 == target){
-                        count2 =  target +1;
-                        res = true;
-                    }
-                    if(res){
-                        o.notifyAll();
-                        System.out.println(target);
-                        break;
-                    }else {
-                        try {
-                            o.wait();
-                        }catch (Exception e){
-
-                        }
-                    }
-                }
-            }
-
-
-
-        }
-    }
 }
