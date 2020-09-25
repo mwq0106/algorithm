@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author mwq0106
@@ -17,26 +18,18 @@ public class NiukeJianzhiOffer {
     public void duplicate(int numbers[],int length,int [] duplication) {
 
     }
-    public static void main(String[] a) throws Exception{
-        NiukeJianzhiOffer niukeJianzhiOffer = new NiukeJianzhiOffer();
-        List<Node> list = new LinkedList<>();
-        Node node = new Node();
-        node.val =1;
-        list.add(node);
-        Node node2 = new Node();
-        node2.val =2;
-        list.add(node2);
-        list.add(null);
-        list.add(null);
-        Node node3 = new Node();
-        node3.val =3;
-        list.add(node3);
-        list.add(null);
-        list.add(null);
-        niukeJianzhiOffer.list = list;
-        niukeJianzhiOffer.l = 0;
-        niukeJianzhiOffer.r = list.size()-1;
-        Node root = niukeJianzhiOffer.de();
+
+
+    static AtomicInteger count = new AtomicInteger(1);
+    static Integer count2 = 1;
+    static Object o = new Object();
+    public static void main(String[] ar) throws Exception{
+        MyThread a = new MyThread(1);
+        MyThread b = new MyThread(2);
+        MyThread c = new MyThread(3);
+        a.start();
+        b.start();
+        c.start();
     }
 
     /**
@@ -90,5 +83,132 @@ public class NiukeJianzhiOffer {
         Node left;
         Node right;
         int val;
+    }
+
+    public static void print(int[][] numbs){
+        int a = 0,b = numbs[0].length-1;//左右
+        int c = 0,d = numbs.length-1;//上下
+        int de = 0;
+        int i = 0;
+        int j = 0;
+        while (true){
+//            while (j<=b){
+//                System.out.print(numbs[i][j]);
+//                j++;
+//            }
+//            j--;
+//            i++;
+//            c ++;
+//            de = 1;
+//
+//            while (i <= d){
+//                System.out.print(numbs[i][j]);
+//                i ++;
+//            }
+//            i--;
+//            j--;
+//            b --;
+//            de = 2;
+//
+//            while (j >= a){
+//                System.out.print(numbs[i][j]);
+//                j --;
+//            }
+//            j++;
+//            i--;
+//            d --;
+//            de = 3;
+//
+//            while (i>=c){
+//                System.out.print(numbs[i][j]);
+//                i--;
+//            }
+//            i++;
+//            j++;
+//            a ++;
+//            de = 0;
+
+            if(de == 0){
+                while (j<=b){
+                    System.out.print(numbs[i][j]+" ");
+                    j++;
+                }
+                j--;
+                i++;
+                c ++;
+                de = 1;
+            }else if(de == 1){
+                while (i <= d){
+                    System.out.print(numbs[i][j]+" ");
+                    i ++;
+                }
+                i--;
+                j--;
+                b --;
+                de = 2;
+            }else if(de == 2){
+                while (j >= a){
+                    System.out.print(numbs[i][j]+" ");
+                    j --;
+                }
+                j++;
+                i--;
+                d --;
+                de = 3;
+            }else {
+                while (i>=c){
+                    System.out.print(numbs[i][j]+" ");
+                    i--;
+                }
+                i++;
+                j++;
+                a ++;
+                de = 0;
+            }
+            if(c>d || a>b){
+                break;
+            }
+        }
+
+    }
+
+
+    static class MyThread extends Thread{
+        MyThread t;
+        int target;
+        MyThread(MyThread t){
+            this.t = t;
+        }
+        MyThread(int target){
+            this.target = target;
+        }
+
+        @Override
+        public void run(){
+            synchronized (o){
+                while (true){
+//                    boolean res = count.compareAndSet(target,target +1);
+                    boolean res = false;
+                    if(count2 == target){
+                        count2 =  target +1;
+                        res = true;
+                    }
+                    if(res){
+                        o.notifyAll();
+                        System.out.println(target);
+                        break;
+                    }else {
+                        try {
+                            o.wait();
+                        }catch (Exception e){
+
+                        }
+                    }
+                }
+            }
+
+
+
+        }
     }
 }
