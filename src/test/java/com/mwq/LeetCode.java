@@ -12,7 +12,7 @@ import java.util.*;
 public class LeetCode {
     public static void main(String[] args) {
         LeetCode leetCode = new LeetCode();
-
+        List<String> res = leetCode.letterCombinations("23");
     }
 
     /**
@@ -294,5 +294,41 @@ public class LeetCode {
             c |=1;
         }
         return c;
+    }
+    public List<String> letterCombinations(String digits) {
+        List<String> res = letterCombinationsDfs(digits,0);
+        return res;
+    }
+    private String letterMap[] = {
+            " ",    //0
+            "",     //1
+            "abc",  //2
+            "def",  //3
+            "ghi",  //4
+            "jkl",  //5
+            "mno",  //6
+            "pqrs", //7
+            "tuv",  //8
+            "wxyz"  //9
+    };
+
+    private List<String> letterCombinationsDfs(String digits,int start){
+        if(start >= digits.length()){
+            return new LinkedList<>();
+        }
+        char s = digits.charAt(start);
+        List<String> list = letterCombinationsDfs(digits,start+1);
+        String s2 = letterMap[s-'0'];
+        List<String> res = new LinkedList<>();
+        for (int i = 0; i < s2.length(); i++) {
+            if(list.size() == 0){
+                res.add(((Character) s2.charAt(i)).toString());
+            }
+            for (int j = 0; j < list.size(); j++) {
+                res.add(s2.charAt(i) + list.get(j));
+            }
+
+        }
+        return res;
     }
 }
