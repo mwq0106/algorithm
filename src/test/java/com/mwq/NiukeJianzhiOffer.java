@@ -14,10 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2020/9/4
  */
 public class NiukeJianzhiOffer {
-    @Test
-    public void duplicate(int numbers[],int length,int [] duplication) {
 
-    }
 
     public static void main(String[] ar) throws Exception{
 
