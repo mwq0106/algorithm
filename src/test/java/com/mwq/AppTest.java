@@ -9,24 +9,6 @@ import org.junit.Test;
  */
 public class AppTest 
 {
-    /**
-     *
-     */
-    @Test
-    public void repeatNumbInArray()
-    {
-        System.out.println(digui(4));
-    }
-    public int digui(int n){
-        if(n == 0){
-            return 0;
-        }else if(n == 1){
-            return 1;
-        }else if(n == 2){
-            return 2;
-        }
-        return digui(n-1)+digui(n-2);
-    }
     @Test
     public void tesst(){
         System.out.println(get(11));
