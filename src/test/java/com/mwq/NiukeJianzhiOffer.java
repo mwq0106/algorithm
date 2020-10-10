@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class NiukeJianzhiOffer {
 
 
-    public static void main(String[] ar) throws Exception{
+    public static void main(String[] ar){
 
     }
 
