@@ -120,32 +120,7 @@ public class BaseSort2 {
         }
         return low;
     }
-    public static void heapsort(int[] numbs){
-        buildheap(numbs);
-        for (int i = 0; i < numbs.length; i++) {
-            swap(numbs,0,numbs.length - 1 - i);
-            heapify(numbs,0,numbs.length-i-1);
-        }
-    }
-    public static void buildheap(int[] numbs){
-        for (int i = numbs.length/2 -1; i >=0 ; i--) {
-            heapify(numbs,i,numbs.length);
-        }
-    }
-    public static void heapify(int[] numbs,int index,int len){
-        int maxIndex = index;
 
-        if(2*index + 1<len && numbs[2*index+1]>numbs[maxIndex]){
-            maxIndex = 2*index+1;
-        }
-        if(2*index + 2<len && numbs[2*index+2]>numbs[maxIndex]){
-            maxIndex = 2*index+2;
-        }
-        if(maxIndex != index){
-            swap(numbs,maxIndex,index);
-            heapify(numbs,maxIndex,len);
-        }
-    }
     public static int rob(int[] numbs){
         int[] values = new int[numbs.length+1];
         values[0] = 0;

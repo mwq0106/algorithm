@@ -216,4 +216,55 @@ public class BaseSort {
 //        swap(numbs,index,j);
         return i;
     }
+
+    /**
+     * 保存小于index值的左指针，从左向右查找小于index的数，找到，
+     * 与左指针交换，左指针++，继续向右找
+     * @param numbs
+     * @param l
+     * @param r
+     * @return
+     */
+    public static int partition2(int[] numbs,int l,int r){
+        int index = l+1;
+        int numb = numbs[l];
+        for (int i = l+1; i <=r ; i++) {
+            if(numbs[i]<numb){
+                swap(numbs,i,index);
+                index++;
+            }
+        }
+        swap(numbs,index-1,l);
+        return index-1;
+    }
+    /**
+     * 堆排序
+     * @param numbs
+     */
+    public static void heapsort(int[] numbs){
+        buildheap(numbs);
+        for (int i = 0; i < numbs.length; i++) {
+            swap(numbs,0,numbs.length - 1 - i);
+            heapify(numbs,0,numbs.length-i-1);
+        }
+    }
+    public static void buildheap(int[] numbs){
+        for (int i = numbs.length/2 -1; i >=0 ; i--) {
+            heapify(numbs,i,numbs.length);
+        }
+    }
+    public static void heapify(int[] numbs,int index,int len){
+        int maxIndex = index;
+
+        if(2*index + 1<len && numbs[2*index+1]>numbs[maxIndex]){
+            maxIndex = 2*index+1;
+        }
+        if(2*index + 2<len && numbs[2*index+2]>numbs[maxIndex]){
+            maxIndex = 2*index+2;
+        }
+        if(maxIndex != index){
+            swap(numbs,maxIndex,index);
+            heapify(numbs,maxIndex,len);
+        }
+    }
 }
