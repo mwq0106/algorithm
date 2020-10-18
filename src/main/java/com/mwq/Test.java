@@ -5,7 +5,11 @@ package com.mwq;
  * @date 2020/9/23
  */
 public class Test {
-    public static void main( String[] args) {
-
+    /**
+     * psvm sout快捷键牛逼
+     * @param args
+     */
+    public static void main(String[] args) {
+        System.out.println();
     }
 }
