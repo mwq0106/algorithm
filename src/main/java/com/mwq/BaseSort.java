@@ -187,7 +187,7 @@ public class BaseSort {
         if(l>=r){
             return;
         }
-        int m = getIndex(numbs,l,r);
+        int m = partition2(numbs,l,r);
         quickSortDigui(numbs,l,m-1);
         quickSortDigui(numbs,m+1,r);
     }
