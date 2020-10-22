@@ -12,7 +12,15 @@ import java.util.*;
 public class LeetCode {
     public static void main(String[] args) {
         LeetCode leetCode = new LeetCode();
-        List<String> res = leetCode.letterCombinations("23");
+        ListNode node1 = new ListNode(8);
+        node1.next = new ListNode(6);
+        ListNode node2 = new ListNode(3);
+        node2.next = new ListNode(3);
+        ListNode res = leetCode.addTwoNumbers(node1,node2);
+        while (res !=null){
+            System.out.print(res.val+" ");
+            res= res.next;
+        }
     }
 
     /**
@@ -330,5 +338,90 @@ public class LeetCode {
 
         }
         return res;
+    }
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    public static class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    }
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode node1 = l1;
+        ListNode node2 = l2;
+        ListNode res = new ListNode();
+        int next = 0;
+        ListNode temp = res;
+        while (true){
+            ListNode tnode = new ListNode(next);
+            next=0;
+            if(node1 != null){
+                tnode.val += node1.val;
+                node1=node1.next;
+            }
+            if(node2 != null){
+                tnode.val += node2.val;
+                node2=node2.next;
+            }
+            if(tnode.val >9){
+                tnode.val-=10;
+                next = 1;
+            }
+            if(node1 ==null && node2==null && next==1){
+                tnode.next = new ListNode(1);
+            }
+            temp.next = tnode;
+            temp=temp.next;
+            if(node1 ==null && node2==null){
+                break;
+            }
+        }
+        return res.next;
+    }
+    public int lengthOfLongestSubstring(String s) {
+        if(s.length() == 0){
+            return 0;
+        }
+
+        int start=0,end =0;
+        int max = 0;
+        int[] num = new int[26];
+        for (int i = 0; i < 26; i++) {
+            num[i] =-1;
+        }
+        num[s.charAt(0) - 'a'] = 0;
+        while (true){
+            end ++;
+            if(end>=s.length()){
+                if(end -start >max){
+                    max = end-start;
+                }
+                break;
+            }
+            char c = s.charAt(end);
+            int index = num[c - 'a'];
+            if(index != -1){
+                while (start <= index){
+                    num[s.charAt(start) -'a'] = -1;
+                    start ++;
+                }
+            }
+            num[c - 'a'] = end;
+            if(end -start+1 >max){
+                max = end-start+1;
+            }
+        }
+//        System.out.print(max);
+        return max;
     }
 }
