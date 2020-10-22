@@ -11,6 +11,7 @@ import java.util.*;
  */
 public class LeetCode {
     public static void main(String[] args) {
+
         LeetCode leetCode = new LeetCode();
         ListNode node1 = new ListNode(8);
         node1.next = new ListNode(6);
@@ -423,5 +424,49 @@ public class LeetCode {
         }
 //        System.out.print(max);
         return max;
+    }
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n = nums1.length+nums2.length;
+        Queue<Integer> q2 = new PriorityQueue<>();
+        Queue<Integer> q1 = new PriorityQueue<>((x, y) -> y - x);
+        int a =0;
+        int b=0;
+        for(int i=0;i<n;i++){
+            int min;
+            if(a>=nums1.length){
+                min = nums2[b];
+                b++;
+            }else if(b>= nums2.length){
+                min = nums1[a];
+                a++;
+            }else if(nums1[a]<nums2[b]){
+                min = nums1[a];
+                a++;
+            }else {
+                min = nums2[b];
+                b++;
+            }
+            if(i%2==0){
+                q1.add(min);
+            }else{
+                q2.add(min);
+            }
+            if(q1.size() >0 && q2.size()>0 && q1.peek() > q2.peek()){
+                int temp1 = q1.poll();
+                int temp2 = q2.poll();
+                q1.add(temp2);
+                q2.add(temp1);
+            }
+        }
+        if(n %2==0){
+            int temp1 = q1.poll();
+            int temp2 = q2.poll();
+            return (temp1 + temp2)/2.0;
+        }else{
+            if(q1.size() > q2.size()){
+                return q1.poll();
+            }
+            return q2.poll();
+        }
     }
 }
