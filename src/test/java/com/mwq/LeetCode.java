@@ -304,42 +304,7 @@ public class LeetCode {
         }
         return c;
     }
-    public List<String> letterCombinations(String digits) {
-        List<String> res = letterCombinationsDfs(digits,0);
-        return res;
-    }
-    private String letterMap[] = {
-            " ",    //0
-            "",     //1
-            "abc",  //2
-            "def",  //3
-            "ghi",  //4
-            "jkl",  //5
-            "mno",  //6
-            "pqrs", //7
-            "tuv",  //8
-            "wxyz"  //9
-    };
 
-    private List<String> letterCombinationsDfs(String digits,int start){
-        if(start >= digits.length()){
-            return new LinkedList<>();
-        }
-        char s = digits.charAt(start);
-        List<String> list = letterCombinationsDfs(digits,start+1);
-        String s2 = letterMap[s-'0'];
-        List<String> res = new LinkedList<>();
-        for (int i = 0; i < s2.length(); i++) {
-            if(list.size() == 0){
-                res.add(((Character) s2.charAt(i)).toString());
-            }
-            for (int j = 0; j < list.size(); j++) {
-                res.add(s2.charAt(i) + list.get(j));
-            }
-
-        }
-        return res;
-    }
     /**
      * Definition for singly-linked list.
      * public class ListNode {
@@ -469,4 +434,222 @@ public class LeetCode {
             return q2.poll();
         }
     }
+    public String longestPalindrome(String s) {
+        String max = "";
+        for (int i =0;i<s.length()-1;i++){
+            String tem1 = extent1(s,i,i+1);
+            String tem2 = extent1(s,i);
+            String temMax = "";
+            if(tem1.length()>tem2.length()){
+                temMax = tem1;
+            }else {
+                temMax = tem2;
+            }
+            if(max.length()<temMax.length()){
+                max = temMax;
+            }
+        }
+        String tem= extent1(s,s.length()-1);
+        if(max.length() < tem.length()){
+            max=tem;
+        }
+//        System.out.println(max);
+        return max;
+    }
+    public static String extent1(String s,int i,int j){
+        int max = 0;
+        String res="";
+        while (true){
+            if(s.charAt(i) == s.charAt(j)){
+                if(j - i +1> max){
+                    res = s.substring(i,j+1);
+                    max = j - i +1;
+                }
+                i--;
+                j++;
+            }else {
+                break;
+            }
+            if(i < 0 || j>=s.length()){
+                break;
+            }
+        }
+        return res;
+    }
+    public static String extent1(String s,int i){
+        int max = 1;
+        int a = i-1;
+        int b = i+1;
+        if(a<0 || b>= s.length()){
+            return s.substring(i,i+1);
+        }
+        String res="";
+        while (true){
+            if(s.charAt(a) == s.charAt(b)){
+                if(b - a +1> max){
+                    res = s.substring(a,b+1);
+                    max = b - a +1;
+                }
+                a--;
+                b++;
+            }else {
+                break;
+            }
+            if(a < 0 || b>=s.length()){
+                break;
+            }
+        }
+        return res;
+    }
+
+    /**
+     *  11. 盛最多水的容器，错误的单调栈写法
+     * @param height
+     * @return
+     */
+    public int maxAreaError(int[] height) {
+        Stack<Integer> stack = new Stack<>();
+        int max = 0;
+        for(int i=0;i<height.length;i++){
+            if(stack.isEmpty()){
+                stack.push(i);
+                continue;
+            }
+            while (!stack.isEmpty() && height[stack.peek()] < height[i]){
+                int index = stack.pop();
+                int temp = i-index;
+                int m = temp * Math.min(height[i],height[index]);
+                if(m>max){
+                    max = m;
+                }
+            }
+            stack.push(i);
+        }
+        Stack<Integer> stack2 = new Stack<>();
+        while (!stack.isEmpty()){
+            stack2.push(stack.pop());
+        }
+        int head = stack2.pop();
+        while (!stack2.isEmpty()){
+            int index = stack2.pop();
+            int m = (index - head)*(Math.min(height[head],height[index]));
+            if(m > max){
+                max = m;
+            }
+        }
+//        System.out.println(max);
+        return max;
+    }
+
+    /**
+     *  11. 盛最多水的容器,双指针
+     * @param height
+     * @return
+     */
+    public int maxArea(int[] height) {
+        int a =0;
+        int b=height.length-1;
+        int max=0;
+        while (a<b){
+            int temp = (b-a)*Math.min(height[a],height[b]);
+            if(temp >max){
+                max = temp;
+            }
+            if(height[a]<height[b]){
+                a++;
+            }else {
+                b--;
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 15. 三数之和为0，降级为两数之和，通过遍历的顺序去除掉可能的重复解，类似于剪枝
+     * 排序，取可能的最小数，
+     * 然后剩下的右边的数求两数之和。
+     * 初始的思路为取所有数，求从头到尾的两数之和，并且要跳过所取的数，导致代码很复杂，
+     * @param nums
+     * @return
+     */
+    public  List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> lists = new LinkedList<>();
+        int last = Integer.MAX_VALUE;
+        for(int i =0;i<nums.length;i++){
+            if(nums[i] == last){
+                continue;
+            }
+            last = nums[i];
+            //遍历一半，避免重复
+            if(nums[i] > 0){
+                break;
+            }
+            int target = -nums[i];
+            List<List<Integer>> twoSumList = towSum(nums,i+1,target);
+            for (int j = 0; j < twoSumList.size(); j++) {
+                List<Integer> list = twoSumList.get(j);
+                list.add(nums[i]);
+                lists.add(list);
+            }
+        }
+        return lists;
+    }
+    public  List<List<Integer>> towSum(int[] nums,int start,int target) {
+        List<List<Integer>> lists = new LinkedList<>();
+        int a = start;
+        int b = nums.length-1;
+        while (a<b){
+            int sum = nums[a]+nums[b];
+            if(sum<target){
+                a++;
+            }else if(sum>target){
+                b--;
+            }else {
+                List<Integer> list = new LinkedList<>();
+                int temp = nums[a];
+                list.add(temp);
+                list.add(nums[b]);
+                lists.add(list);
+                while (a<b && nums[a]==temp){
+                    a++;
+                }
+            }
+        }
+        return lists;
+    }
+
+    /**
+     * 17. 电话号码的字母组合,dfs回溯
+     * @param digits
+     * @return
+     */
+    public List<String> letterCombinations(String digits) {
+        String[] digit = new String[]{"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        List<String> res = new LinkedList<>();
+        if(digits.isEmpty()){
+            return res;
+        }
+        List<Character> list = new LinkedList<>();
+        letterCombinationsDfs(digits,0,0,list,digit,res);
+        return res;
+    }
+    private void letterCombinationsDfs(String digits,int start,int length,List<Character> list,String[] digit,List<String> res){
+        if(length == digits.length()){
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0;i<list.size();i++){
+                sb.append(list.get(i));
+            }
+            res.add(sb.toString());
+            return;
+        }
+        char c = digits.charAt(start);
+        String cs = digit[c-'0'];
+        for(int j=0;j<cs.length();j++){
+            list.add(cs.charAt(j));
+            letterCombinationsDfs(digits,start+1,length+1,list,digit,res);
+            list.remove(list.size()-1);
+        }
+    }
+
 }

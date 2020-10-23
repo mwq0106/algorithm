@@ -1,7 +1,6 @@
 package com.mwq;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 基本排序算法
@@ -18,7 +17,10 @@ public class BaseSort {
         for (int i = 0; i < list.size(); i++) {
             quickSort(list.get(i));
         }
-
+        Queue<Integer> q1 = new PriorityQueue<>((o1, o2)-> {return o2-o1;});
+        Queue<Integer> q2 =new PriorityQueue<>((x, y) -> y - x);
+        String[] a = new String[3];
+        Arrays.sort(a,(String x, String y)-> y.compareTo(x));
     }
 
     /**
