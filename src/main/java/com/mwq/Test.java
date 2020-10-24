@@ -16,7 +16,8 @@ public class Test {
      * @param args
      */
     public static void main(String[] args) {
-
+        int[] nums = new int[]{1,2,0};
+        Arrays.sort(nums,1,nums.length);
     }
 
 
