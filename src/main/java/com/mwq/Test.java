@@ -25,7 +25,7 @@ public class Test {
         int a = 'c';
         System.out.println(a);
         Map<String,String> map = new HashMap<>();
-        for(Map.Entry entry:map.entrySet()){
+        for(Map.Entry<String,String> entry:map.entrySet()){
             System.out.println(entry.getKey());
         }
     }
