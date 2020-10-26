@@ -29,6 +29,31 @@ public class Test {
             System.out.println(entry.getKey());
         }
     }
-
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> res = new LinkedList<>();
+        Map<String,List<String>> map = new HashMap<>();
+        // int[][] count = new int[strs.length][];
+        for(int i=0;i<strs.length;i++){
+            int[] f = new int[26];
+            for(int j=0;j<strs[i].length();j++){
+                f[strs[i].charAt(j)-'a'] +=1;
+            }
+            StringBuilder sb = new StringBuilder();
+            for(int j=0;j<26;j++){
+                int a=j+'a';
+                sb.append((char) a);
+                sb.append(f[j]);
+            }
+            String key = sb.toString();
+            if(map.get(key) == null){
+                map.put(key,new ArrayList<>());
+            }
+            map.get(key).add(strs[i]);
+        }
+        for(Map.Entry<String,List<String>> entry:map.entrySet()){
+            res.add(entry.getValue());
+        }
+        return res;
+    }
 
 }
