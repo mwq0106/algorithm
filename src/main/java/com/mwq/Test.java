@@ -16,42 +16,95 @@ public class Test {
      * @param args
      */
     public static void main(String[] args) {
-        int[] nums = new int[]{1,2,0};
-        Arrays.sort(nums,1,nums.length);
-        for (int i = 0; i <26 ; i++) {
-            int a = 'a';
-            System.out.println((char) (a+i));
-        }
-        int a = 'c';
-        System.out.println(a);
-        Map<String,String> map = new HashMap<>();
-        for(Map.Entry<String,String> entry:map.entrySet()){
-            System.out.println(entry.getKey());
-        }
+        Test test=new Test();
+        int[] nums = new int[]{4,2,0,3,2,5};
+        int res = test.largestRectangleArea(nums);
+        System.out.println(res);
     }
-    public List<List<String>> groupAnagrams(String[] strs) {
-        List<List<String>> res = new LinkedList<>();
-        Map<String,List<String>> map = new HashMap<>();
-        // int[][] count = new int[strs.length][];
-        for(int i=0;i<strs.length;i++){
-            int[] f = new int[26];
-            for(int j=0;j<strs[i].length();j++){
-                f[strs[i].charAt(j)-'a'] +=1;
+    public int largestRectangleArea(int[] heights) {
+        Stack<Integer> stack = new Stack<>();
+        int max=0;
+        for(int i=0;i<heights.length;i++){
+            if(stack.isEmpty() || heights[stack.peek()]<=heights[i]){
+                stack.push(i);
+                continue;
+            }else {
+                while(!stack.isEmpty() && heights[stack.peek()] > heights[i]){
+                    int index = stack.pop();
+                    while(!stack.isEmpty() && heights[stack.peek()] == heights[index]){
+                        index = stack.pop();
+                    }
+                    if(!stack.isEmpty()){
+                        int temp = (i- stack.peek() -1)*heights[index];
+                        if(temp > max){
+                            max = temp;
+                        }
+                    }else {
+                        int temp = i*heights[index];
+                        if(temp > max){
+                            max = temp;
+                        }
+                    }
+                }
+                stack.push(i);
             }
-            StringBuilder sb = new StringBuilder();
-            for(int j=0;j<26;j++){
-                int a=j+'a';
-                sb.append((char) a);
-                sb.append(f[j]);
-            }
-            String key = sb.toString();
-            if(map.get(key) == null){
-                map.put(key,new ArrayList<>());
-            }
-            map.get(key).add(strs[i]);
         }
-        for(Map.Entry<String,List<String>> entry:map.entrySet()){
-            res.add(entry.getValue());
+        while(!stack.isEmpty()){
+            int temp = stack.pop();
+            int width;
+            if(stack.isEmpty()){
+                width = heights.length;
+            }else {
+                width = heights.length - stack.peek()-1;
+            }
+            max = Math.max(width*heights[temp],max);
+        }
+        return max;
+    }
+    public int largestRectangleArea2(int[] heights) {
+        int len = heights.length;
+        if (len == 0) {
+            return 0;
+        }
+        if (len == 1) {
+            return heights[0];
+        }
+
+        int res = 0;
+        Deque<Integer> stack = new ArrayDeque<>(len);
+        for (int i = 0; i < len; i++) {
+            // 这个 while 很关键，因为有可能不止一个柱形的最大宽度可以被计算出来
+            while (!stack.isEmpty() && heights[i] < heights[stack.peekLast()]) {
+                int curHeight = heights[stack.pollLast()];
+                while (!stack.isEmpty() && heights[stack.peekLast()] == curHeight) {
+                    stack.pollLast();
+                }
+
+                int curWidth;
+                if (stack.isEmpty()) {
+                    curWidth = i;
+                } else {
+                    curWidth = i - stack.peekLast() - 1;
+                }
+
+                // System.out.println("curIndex = " + curIndex + " " + curHeight * curWidth);
+                res = Math.max(res, curHeight * curWidth);
+            }
+            stack.addLast(i);
+        }
+
+        while (!stack.isEmpty()) {
+            int curHeight = heights[stack.pollLast()];
+            while (!stack.isEmpty() && heights[stack.peekLast()] == curHeight) {
+                stack.pollLast();
+            }
+            int curWidth;
+            if (stack.isEmpty()) {
+                curWidth = len;
+            } else {
+                curWidth = len - stack.peekLast() - 1;
+            }
+            res = Math.max(res, curHeight * curWidth);
         }
         return res;
     }
