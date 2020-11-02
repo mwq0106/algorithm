@@ -11,6 +11,14 @@ import java.util.*;
  * @date 2020/9/23
  */
 public class Test {
+    static class ListNode{
+        int val;
+        ListNode next;
+        ListNode(int x) {
+            val = x;
+            next = null;
+        }
+    }
     /**
      * psvm sout快捷键
      * @param args
@@ -18,6 +26,7 @@ public class Test {
     public static void main(String[] args) {
         Test test=new Test();
         int[] nums = new int[]{4,2,0,3,2,5};
+        List<Integer> list=new ArrayList<>();
         int res = test.largestRectangleArea(nums);
         System.out.println(res);
     }
@@ -108,5 +117,38 @@ public class Test {
         }
         return res;
     }
-
+    public boolean isPalindrome(ListNode head) {
+        if(head==null||head.next==null){
+            return true;
+        }
+        ListNode slow=head,fast=head.next;
+        while(fast!=null&&fast.next!=null){
+            fast=fast.next.next;
+            slow=slow.next;
+        }
+        ListNode rightHead=slow.next;
+        slow.next=null;
+        ListNode pre=rightHead;
+        ListNode currentNode=rightHead.next;
+        rightHead.next=null;
+        while(currentNode!=null){
+            ListNode temp=currentNode.next;
+            currentNode.next=pre;
+            pre=currentNode;
+            currentNode=temp;
+            if(currentNode==null){
+                rightHead=pre;
+            }
+        }
+        currentNode =rightHead;
+        ListNode leftNode=head;
+        while(currentNode!=null){
+            if(leftNode.val!=currentNode.val){
+                return false;
+            }
+            currentNode=currentNode.next;
+            leftNode=leftNode.next;
+        }
+        return true;
+    }
 }
