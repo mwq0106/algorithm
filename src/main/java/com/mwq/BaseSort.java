@@ -24,6 +24,34 @@ public class BaseSort {
     }
 
     /**
+     * PriorityQueue类的使用，Map的遍历，Arrays.sort自定义排序顺序
+     */
+    public static void test(){
+        class Wrap{
+            Integer num;
+            Integer cnt;
+            Wrap(int num,int cnt){
+                this.num=num;
+                this.cnt=cnt;
+            }
+        }
+        Map<Integer,Integer> map=new HashMap<>();
+        PriorityQueue<Wrap> queue=new PriorityQueue<>((o1,o2)->o2.cnt-o1.cnt);
+        for(Map.Entry<Integer,Integer> entry:map.entrySet()){
+            Wrap warp=new Wrap(entry.getKey(),entry.getValue());
+            queue.add(warp);
+        }
+        String[] a = new String[3];
+        Arrays.sort(a,( x,  y)-> y.compareTo(x));
+        Arrays.sort(a,(String x, String y)-> y.compareTo(x));
+        Integer[] nums=new Integer[2];
+        //int[] nums=new int[2];
+        //非包装类不行，如果是非包装类需要声明类型
+        Arrays.sort(nums,(o1,o2)->o2-o1);
+        Arrays.sort(nums,(Integer o1,Integer o2)->o2-o1);
+    }
+
+    /**
      * 选择排序，每次都选择最小的放在左边
      * @param nums
      */
@@ -66,6 +94,7 @@ public class BaseSort {
         }
         System.out.println();
     }
+
 
     /**
      * 插入排序，左边是有序数组，从右边一个个选择插入左边的合适位置
