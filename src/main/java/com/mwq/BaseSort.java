@@ -3,7 +3,7 @@ package com.mwq;
 import java.util.*;
 
 /**
- * 基本排序算法
+ * 基本排序算法及常见算法及代码
  *
  */
 public class BaseSort {
@@ -23,6 +23,53 @@ public class BaseSort {
         Arrays.sort(a,(String x, String y)-> y.compareTo(x));
     }
 
+    /**
+     * 并查集基本操作
+     */
+    class UF{
+        private int[] parents;
+        private int[] size;
+        private int count;
+        UF(int n){
+            this.parents=new int[n];
+            this.size=new int[n];
+            this.count=n;
+            for(int i=0;i<n;i++){
+                parents[i]=i;
+                size[i]=1;
+            }
+        }
+        public void union(int p,int q){
+            int rootq=find(q);
+            int rootp=find(p);
+            if(rootq==rootp){
+                return;
+            }
+            if(size[rootq]<size[rootp]){
+                parents[rootq]=rootp;
+                size[rootp]+=size[rootq];
+            }else {
+                parents[rootp]=rootq;
+                size[rootq]+=size[rootp];
+            }
+            count--;
+        }
+        public boolean connected(int p,int q){
+            int rootq=find(q);
+            int rootp=find(p);
+            return rootq==rootp;
+        }
+        public int find(int x){
+            while(x!=parents[x]){
+                parents[x]=parents[parents[x]];
+                x=parents[x];
+            }
+            return x;
+        }
+        public int count(){
+            return count;
+        }
+    }
     /**
      * PriorityQueue类的使用，Map的遍历，Arrays.sort自定义排序顺序
      */
