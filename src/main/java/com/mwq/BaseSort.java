@@ -45,6 +45,7 @@ public class BaseSort {
             if(rootq==rootp){
                 return;
             }
+            //小树挂到大树下面
             if(size[rootq]<size[rootp]){
                 parents[rootq]=rootp;
                 size[rootp]+=size[rootq];
@@ -61,6 +62,7 @@ public class BaseSort {
         }
         public int find(int x){
             while(x!=parents[x]){
+                //路径压缩
                 parents[x]=parents[parents[x]];
                 x=parents[x];
             }
