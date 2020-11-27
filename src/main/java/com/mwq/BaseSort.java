@@ -21,6 +21,8 @@ public class BaseSort {
         Queue<Integer> q2 =new PriorityQueue<>((x, y) -> y - x);
         String[] a = new String[3];
         Arrays.sort(a,(String x, String y)-> y.compareTo(x));
+        //int类型转char类型
+        char cNumber= (char) (9+'0');
     }
 
     /**
