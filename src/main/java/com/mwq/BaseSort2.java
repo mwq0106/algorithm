@@ -1,5 +1,10 @@
 package com.mwq;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 /**
  * @author mwq0106
  * @date 2020/8/18
@@ -7,6 +12,68 @@ package com.mwq;
 public class BaseSort2 {
     public static void main( String[] args) {
         System.out.println(stringAdd("999","1111"));
+        Queue<Integer> queue=new LinkedList<>();
+        int[] numbs1 = new int[]{3,1,5,2,6,9,100,200,250,1};
+        heapsort(numbs1);
+    }
+    public static void heapsort(int[] numbs){
+        buildheap(numbs);
+        System.out.println(Arrays.toString(numbs));
+        for(int i=0;i<numbs.length;i++){
+            swap(numbs,0,numbs.length-i-1);
+            heapSink(numbs,0,numbs.length-i-1);
+        }
+        System.out.println(Arrays.toString(numbs));
+    }
+    private static void buildheap(int[] numbs){
+        for(int i=numbs.length/2-1;i>=0;i--){
+            heapSink(numbs,i,numbs.length);
+        }
+    }
+    private static void heapSink(int[] numbs,int start,int len){
+//        System.out.println("start="+start);
+        int leftChild=2*start+1;
+        int rightChild=2*start+2;
+        int index=start;
+        if(leftChild<len&&numbs[leftChild]>numbs[index]){
+            index=leftChild;
+        }
+        if(rightChild<len&&numbs[rightChild]>numbs[index]){
+            index=rightChild;
+        }
+        if(index!=start){
+            swap(numbs,index,start);
+            heapSink(numbs,index,len);
+        }
+    }
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        LinkedList<Integer> queue=new LinkedList<>();
+        int[] res=new int[nums.length+1-k];
+        for(int i=0;i<k-1;i++){
+            if(queue.isEmpty()){
+                queue.add(i);
+            }else{
+                while(!queue.isEmpty()&&nums[queue.getLast()]<nums[i]){
+                    queue.removeLast();
+                }
+                queue.add(i);
+            }
+        }
+        for(int i=k-1;i<nums.length;i++){
+            if(queue.isEmpty()){
+                queue.add(i);
+            }else{
+                while (!queue.isEmpty()&&(i-queue.getFirst()+1>k)){
+                    queue.removeFirst();
+                }
+                while(!queue.isEmpty()&&nums[queue.getLast()]<nums[i]){
+                    queue.removeLast();
+                }
+                queue.add(i);
+            }
+            res[i-(k-1)]=nums[queue.getFirst()];
+        }
+        return res;
     }
     public static void mergesort(int[] numbs,int l,int r){
         if(l>=r){
